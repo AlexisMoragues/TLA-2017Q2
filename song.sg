@@ -4,6 +4,11 @@ tempo;
 //sonido default
 
 //variables
+declaracion_string
+VariableID TOKEN_ASIGNAR_CIFRADO_AMERICANO STRING
+declaracion_int
+VariableID TOKEN_ASIGNAR_CIFRADO_PIANO NUMERO
+
 var rep = 2;
 var song = 0;
 
