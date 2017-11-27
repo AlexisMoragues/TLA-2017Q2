@@ -26,6 +26,6 @@ char cifrado_americano(char* nota) {
 		return 'b';
 	}
 	else {
-		return 'x'
+		return 'x';
 	}
 }
