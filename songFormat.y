@@ -46,15 +46,30 @@ declaracion_variable: declaracion_int
 |		declaracion_string 
 ;
 
-declaracion_int: TOKEN_VARIABLE VARIABLE_ID TOKEN_ASIGNACION numero TOKEN_NUEVA_LINEA
+declaracion_int: TOKEN_VARIABLE VARIABLE_ID TOKEN_ASIGNACION NUMERO TOKEN_NUEVA_LINEA
 {
-	if(!containsMapKey())
+	if(!containsKeyMap($2)){
+        	int type = INT_CONST;
+        	writeToFunctions("int %s = %s;\n",$2,$4);
+        	putMap($2,type);
+        }else{
+        	printf("Linea: %d Error: declaracion previa de la nota %s\n", yylineno ,$2);
+        	exit(ERROR_CODE);
+        }
 }
 ;
 
-declaracion_string: TOKEN_VARIABLE VARIABLE_ID TOKEN_ASIGNACION string TOKEN_NUEVA_LINEA
+declaracion_string: TOKEN_VARIABLE VARIABLE_ID TOKEN_ASIGNACION STRING TOKEN_NUEVA_LINEA
 {
-
+	if(!containsKeyMap($3)){
+	        	int type = STRING_CONST;
+	        	writeToFunctions("char* %s = %s;\n",$2,$4);
+	        	putMap($3,type);
+	        }else{
+	        	printf("Linea: %d Error: declaracion previa de la nota %s\n",yylineno ,$2);
+	        	exit(ERROR_CODE);
+	        }
+	        
 }
 ;
 
@@ -112,6 +127,21 @@ tipo_asignacion: asignacion_normal
 asignacion_normal: TOKEN_VARIABLE VARIABLE_ID TOKEN_ASIGNACION expresion_matematica TOKEN_NUEVA_LINEA
 {
 
+	int type;
+	int exists = getValueMap($4,&type);
+	if(exists!=0) {
+		printf("error");
+		exit(ERROR_CODE);
+	}
+	if(type == INT_CONST) {
+		int index = getNewFunctionIndex();
+		writeAsignation($2,$4," ", index);
+		$$ = index;
+	}
+	else {
+		printf("error");
+		exit(ERROR_CODE);
+	}
 }
 ;
 
@@ -138,3 +168,33 @@ asignacion_bajar_tono: asignacion_subir_tono: TOKEN_VARIABLE VARIABLE_ID TOKEN_B
 
 }
 ;
+
+
+
+ %%
+
+
+
+main() {
+	openFunctions();
+	openMain();
+    writeToFunctions("void _f0(){  }\n");
+    
+    yyparse();
+} 
+
+
+
+
+int getNewFunctionIndex() {
+	return counterFunction++;
+}
+
+
+
+
+void writeAsignation(char * variableName,int functionCounter,char* operand, int thisFunctionCounter){
+
+
+	writeToFunctions("void _f%d(){%s %s=_f%d();}\n" ,thisFunctionCounter,variableName,operand,functionCounter);
+}
