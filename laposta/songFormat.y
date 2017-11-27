@@ -5,6 +5,7 @@
 #define ERROR_CODE -42
 #include <stdio.h>
 #include <stdlib.h>
+
 extern int yylineno;
 int counterFunction = 1; 
 int getNewFunctionIndex();
@@ -20,15 +21,42 @@ void yyerror(char* msg){
         char* string;
 }
 
-%token TOKEN_ASIGNACION TOKEN_NUEVA_LINEA TOKEN_VARIABLE TOKEN_REPETIR TOKEN_CUANDO TOKEN_ENTONCES TOKEN_TRASPONER_HACIA_ARRIBA TOKEN_TRASPONER_HACIA_ABAJO TOKEN_CONDICION_PARA_REPETIR TOKEN_SUBIR_OCTAVA TOKEN_BAJAR_OCTAVA
-
+%token TOKEN_INICIO_VARIABLES
+%token TOKEN_FIN_VARIABLES
+%token TOKEN_MOSTRAR
+%token TOKEN_ASIGNACION 
+%token TOKEN_PARENTSIS_APERTURA
+%token TOKEN_PARENTESIS_CIERRE
+%token TOKEN_NUEVA_LINEA 
+%token TOKEN_VARIABLE
+%token TOKEN_REPETIR
+%token TOKEN_MIENTRAS
+%token TOKEN_CUANDO
+%token TOKEN_ENTONCES
+%token TOKEN_SUBIR_NOTA
+%token TOKEN_BAJAR_NOTA
+%token TOKEN_CONDICION_PARA_REPETIR
+%token TOKEN_SUBIR_OCTAVA
+%token TOKEN_BAJAR_OCTAVA
+%token TOKEN_FIN
+%token TOKEN_NO
 %token <string> NUMERO
 %token <string> VARIABLE_ID
 %token <string> STRING
 %token <string> TOKEN_RELACION
-
-%type <numero> declaracion_variable declaracion_string declaracion_int sentencia sentencia_if sentencia_asignacion sentencia_while
-%type <numero> tipo_print sentencia_print sentenciasBloque tipo_asignacion asignacion_normal asignacion_subir_tono asignacion_bajar_tono asignacion_subir_octava asignacion_bajar_octava asignacion_modulo asignacion_string expresion expresionO expresionY expresion_relacional operando expresion_matematica
+%token <string> TOKEN_ASIGNACION
+%type <numero> declaracion_variable declaracion_string declaracion_int sentencia sentenciasBloque asignacion_subir_tono asignacion_bajar_tono sentencia_if sentencia_asignacion sentencia_while sentenciasMain
+%type <numero> tipo_print
+%type <numero> sentencia_print
+%type <numero> sentenciasBloque sentenciasMain sentencia
+%type <numero> tipo_asignacion
+%type <numero> asignacion_normal
+%type <numero> asignacion_subir_tono
+%type <numero> asignacion_bajar_tono
+%type <numero> asignacion_subir_octava
+%type <numero> asignacion_bajar_octava
+%type <numero> asignacion_string
+%type <numero> expresion expresion_relacional expresion_matematica operando 
 %start programa
 %% 
 
@@ -42,8 +70,29 @@ programa:	TOKEN_INICIO_VARIABLES  declaracion_variables TOKEN_FIN_VARIABLES
 }
 ;
 
+sentenciasMain:	sentenciasMain sentencia 
+{
+	writeToMain("_f%d();\n",$2);
+}
+;
+
+sentenciasBloque:	 /*  blank  */{
+	$$ = 0;
+}
+|sentenciasBloque sentencia {
+
+	int index = getNewFunctionIndex();
+	$$ = index;
+	writeToFunctions("void _f%d(){ _f%d(); _f%d(); }\n",index, $1, $2);
+}
+;
+
+declaracion_variables:
+|	declaracion_variables declaracion_variable TOKEN_NUEVA_LINEA
+;
+
 declaracion_variable: declaracion_int
-|		declaracion_string 
+|	declaracion_string
 ;
 
 declaracion_int: TOKEN_VARIABLE VARIABLE_ID TOKEN_ASIGNACION NUMERO TOKEN_NUEVA_LINEA
@@ -73,6 +122,7 @@ declaracion_string: TOKEN_VARIABLE VARIABLE_ID TOKEN_ASIGNACION STRING TOKEN_NUE
 }
 ;
 
+
 sentencia: sentencia_if
 {
 	$$ = $1;
@@ -94,19 +144,9 @@ sentencia: sentencia_if
 				}
 ;
 
-sentencia_if: TOKEN_CUANDO expresion TOKEN_ENTONCES sentenciasBloque TOKEN_FIN
-{
 
-}
-;
 
-sentencia_while: TOKEN_REPETIR expresion TOKEN_CONDICION_PARA_REPETIR sentenciasBloque TOKEN_FIN
-{
-
-}
-;
-
-sentencia_asignacion:	tipo_asignacion TOKEN_PUNTO
+sentencia_asignacion:	tipo_asignacion
 {
 	$$ = $1;
 }
@@ -117,10 +157,24 @@ tipo_asignacion: asignacion_normal
 |	asignacion_bajar_tono
 |	asignacion_bajar_octava
 |	asignacion_subir_octava
-|	asignacion_modulo
 |	asignacion_string
 {
 	$$ = $1;
+}
+;
+
+
+asignacion_string: TOKEN_VARIABLE   VARIABLE_ID   TOKEN_ASIGNACION  STRING TOKEN_NUEVA_LINEA
+{
+        if(!containsKeyMap($2)){
+        	int type = STRING_CONST;
+        	writeToFunctions("char* %s = %s;\n",$2,$4);
+        	putMap($3,type);
+        }else{
+        	printf("Linea: %d Error: declaracion previa del ingrediente %s\n",yylineno ,$3);
+        	exit(ERROR_CODE);
+        }
+        
 }
 ;
 
@@ -128,7 +182,7 @@ asignacion_normal: TOKEN_VARIABLE VARIABLE_ID TOKEN_ASIGNACION expresion_matemat
 {
 
 	int type;
-	int exists = getValueMap($4,&type);
+	int exists = getValueMap($2,&type);
 	if(exists!=0) {
 		printf("error");
 		exit(ERROR_CODE);
@@ -145,30 +199,146 @@ asignacion_normal: TOKEN_VARIABLE VARIABLE_ID TOKEN_ASIGNACION expresion_matemat
 }
 ;
 
-asignacion_subir_tono: TOKEN_VARIABLE VARIABLE_ID TOKEN_TRASPONER_HACIA_ARRIBA expresion_matematica TOKEN_NUEVA_LINEA
+sentencia_while: TOKEN_MIENTRAS  expresion TOKEN_REPETIR sentenciasBloque TOKEN_FIN
+{
+int index = getNewFunctionIndex();
+$$ = index;	
+writeToFunctions("void _f%d(){ while (  _f%d() ) { _f%d(); } }\n",index, $2, $4);		
+}
+;
+
+sentencia_if:	TOKEN_CUANDO  expresion TOKEN_ENTONCES sentenciasBloque TOKEN_FIN
+{		
+int index = getNewFunctionIndex();	
+		$$ = index;
+		writeToFunctions("void _f%d(){ if (  _f%d() ) { _f%d(); } }\n",index, $2, $4);
+}
+;
+
+
+sentencia_print: TOKEN_MOSTRAR tipo_print
+{
+	$$ = $2;
+} ;
+
+tipo_print: VARIABLE_ID  {		
+		int index = getNewFunctionIndex();
+		$$ = index;
+		int type;
+		int exists = getValueMap($1,&type);
+		if(exists == 0){
+			if(type == INT_CONST){
+				writeToFunctions("void _f%d(){ printf(\"%%d\\n\",%s); }\n",index, $1);
+			}else if(type == STRING_CONST){
+				writeToFunctions("void _f%d(){ printf(\"%%s\\n\",%s); }\n",index, $1);
+			}
+		}else{
+			printf("Linea: %d Error: La nota %s no fue declarada\n", yylineno ,$1);
+			exit(ERROR_CODE);
+		}
+};
+		| NUMERO {		
+		int index = getNewFunctionIndex();
+		$$ = index;
+		writeToFunctions("void _f%d(){ printf(\"%s\\n\"); }\n",index, $1);
+};
+		| STRING  {		
+		int index = getNewFunctionIndex();
+		$$ = index;
+		writeToFunctions("void _f%d(){ printf(%s);printf(\"\\n\");}\n",index, $1);
+};
+
+expresion: TOKEN_NO expresion {
+int index = getNewFunctionIndex();
+$$ = index;	
+writeToFunctions("int _f%d(){ return !_f%d();}\n",index, $2);
+}
+;
+
+expresion_matematica: VARIABLE_ID
+{
+	int type;
+	int exists = getValueMap($1,&type);
+	if(exists != 0){
+		printf("Linea: %d Error: El ingrediente %s no fue declarado\n", yylineno,$1);
+		exit(ERROR_CODE);
+	}
+	if(type == INT_CONST){
+			int index = getNewFunctionIndex();
+			$$ = index;	
+			writeToFunctions("int _f%d(){ return %s;}\n",index, $1);
+	}else{
+		printf("Linea: %d Error: El ingrediente %s no es un int\n", yylineno ,$1);
+		exit(ERROR_CODE);
+	}
+}
+| NUMERO{
+int index = getNewFunctionIndex();
+$$ = index;	
+writeToFunctions("int _f%d(){ return %s;}\n",index, $1);
+}
+;
+
+expresion_relacional: expresion_relacional  TOKEN_RELACION operando
+{
+int index = getNewFunctionIndex();
+$$ = index;
+writeToFunctions("int _f%d(){ return _f%d() %s _f%d();}\n",index, $1,$2, $3);
+}  
+|	operando
+;
+
+asignacion_subir_tono: TOKEN_VARIABLE VARIABLE_ID TOKEN_SUBIR_NOTA expresion_matematica TOKEN_NUEVA_LINEA
 {
 
 }
 ;
 
-asignacion_bajar_tono: TOKEN_VARIABLE VARIABLE_ID TOKEN_TRASPONER_HACIA_ABAJO expresion_matematica TOKEN_NUEVA_LINEA
+asignacion_bajar_tono: TOKEN_VARIABLE VARIABLE_ID TOKEN_BAJAR_NOTA expresion_matematica TOKEN_NUEVA_LINEA
 {
 
 }
 ;
 
-asignacion_subir_octava: asignacion_subir_tono: TOKEN_VARIABLE VARIABLE_ID TOKEN_SUBIR_OCTAVA expresion_matematica TOKEN_NUEVA_LINEA
+asignacion_subir_octava: TOKEN_VARIABLE VARIABLE_ID TOKEN_SUBIR_OCTAVA expresion_matematica TOKEN_NUEVA_LINEA
 {
 
 }
 ;
 
-asignacion_bajar_tono: asignacion_subir_tono: TOKEN_VARIABLE VARIABLE_ID TOKEN_BAJAR_OCTAVA numero TOKEN_NUEVA_LINEA
+asignacion_bajar_octava: TOKEN_VARIABLE VARIABLE_ID TOKEN_BAJAR_OCTAVA expresion_matematica TOKEN_NUEVA_LINEA
 {
 
 }
 ;
 
+
+operando: TOKEN_PARENTSIS_APERTURA  expresion TOKEN_PARENTESIS_CIERRE
+{
+int index = getNewFunctionIndex();
+$$ = index;	
+writeToFunctions("int _f%d(){ return _f%d();}\n",index, $2);
+}
+
+|VARIABLE_ID {
+int type;
+int exists = getValueMap($1,&type);
+if(exists == 0){
+	int index = getNewFunctionIndex();
+	$$ = index;	
+	writeToFunctions("int _f%d(){ return %s;}\n",index, $1);	
+}else{
+	printf("El ingrediente %s no fue declarado\n", $1 );
+	exit(ERROR_CODE);
+}
+}
+
+| NUMERO{
+int index = getNewFunctionIndex();
+$$ = index;	
+writeToFunctions("int _f%d(){ return %s;}\n",index, $1);
+}
+;
 
 
  %%
