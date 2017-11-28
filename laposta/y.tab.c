@@ -24,7 +24,8 @@
 #define ERROR_CODE -42
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "tempWriter.h"
+#include "mapImpl.h"
 extern int yylineno;
 int counterFunction = 1; 
 int getNewFunctionIndex();
@@ -32,7 +33,7 @@ void writeAsignation(char * variableName,int functionCounter,char* operand, int 
 void yyerror(char* msg){
 	printf("Error de syntaxis cerca de la linea %d\n",yylineno);
 }
-#line 18 "songFormat.y"
+#line 19 "songFormat.y"
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
@@ -45,7 +46,7 @@ typedef union
         char* string;
 } YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
-#line 49 "y.tab.c"
+#line 50 "y.tab.c"
 
 /* compatibility with bison */
 #ifdef YYPARSE_PARAM
@@ -104,70 +105,72 @@ extern int YYPARSE_DECL();
 #define YYERRCODE 256
 typedef short YYINT;
 static const YYINT yylhs[] = {                           -1,
-   20,    0,    9,    5,    5,    4,    4,    4,    4,    7,
-    8,    6,   11,   10,   10,   10,   19,   19,    1,    1,
-    3,    2,   12,   12,   14,   13,   15,   17,   17,   16,
-   16,   18,   18,   18,
+   21,    0,    9,    9,    5,    5,    4,    4,    4,    4,
+    7,    8,    6,   11,   10,   10,   10,   20,   20,    1,
+    1,    3,    2,   12,   12,   12,   15,   14,   13,   16,
+   18,   18,   17,   17,   19,   19,   19,
 };
 static const YYINT yylen[] = {                            2,
-    0,    5,    2,    0,    2,    1,    1,    1,    1,    1,
-    5,    5,    2,    1,    1,    1,    0,    3,    1,    1,
-    5,    5,    1,    1,    5,    5,    2,    1,    1,    3,
-    1,    3,    1,    1,
+    0,    5,    0,    3,    0,    2,    1,    1,    1,    1,
+    1,    5,    5,    2,    1,    1,    1,    0,    2,    1,
+    1,    5,    5,    1,    1,    1,    4,    4,    5,    2,
+    1,    1,    3,    1,    3,    1,    1,
 };
 static const YYINT yydefred[] = {                         0,
-   17,    0,    0,    0,    0,    0,   20,   19,    0,    0,
-   18,    0,    0,    0,    0,    0,    0,    3,    6,    7,
-    8,    9,   10,   23,   24,    0,    0,   15,   14,   16,
-   13,    0,    0,    0,    0,   21,   22,    0,   27,    4,
-    4,   29,   28,    0,    0,    0,    0,   25,   26,   11,
-    5,   12,
+   18,    0,    0,    1,    0,   19,   21,   20,    3,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    7,    8,
+    9,   10,   11,   24,   25,   26,    0,    0,   16,   15,
+   17,   14,    0,    0,    0,    0,    0,    4,   22,   23,
+    0,   30,    5,    5,    0,    0,   32,   31,    0,    0,
+    0,   27,   28,   29,   12,    6,   13,
 };
 static const YYINT yydgoto[] = {                          2,
-    6,    7,    8,   51,   46,   19,   20,   21,   12,   31,
-   22,   23,   24,   25,   34,    0,   45,    0,    3,    9,
+    6,    7,    8,   56,   50,   19,   20,   21,   11,   32,
+   22,   23,   24,   25,   26,   35,    0,   49,    0,    3,
+    9,
 };
-static const YYINT yysindex[] = {                      -256,
-    0,    0, -246,    0, -269, -235,    0,    0,    0, -241,
-    0, -244, -249, -273, -247, -243, -243,    0,    0,    0,
-    0,    0,    0,    0,    0, -232, -230,    0,    0,    0,
-    0, -226, -243, -229, -233,    0,    0, -252,    0,    0,
-    0,    0,    0, -225, -224, -257, -253,    0,    0,    0,
-    0,    0,
+static const YYINT yysindex[] = {                      -251,
+    0,    0, -233,    0, -267,    0,    0,    0,    0, -231,
+ -243, -275, -250, -260, -242, -242, -225, -227,    0,    0,
+    0,    0,    0,    0,    0,    0, -226, -224,    0,    0,
+    0,    0, -222, -242, -223, -228, -246,    0,    0,    0,
+ -263,    0,    0,    0, -220, -219,    0,    0, -218, -259,
+ -255,    0,    0,    0,    0,    0,    0,
 };
 static const YYINT yyrindex[] = {                         0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,   37,    0,    0,    0,    0,    0,    0,    0,    0,
+   41,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,
+    0,    0,    0,    0,    0,    0,    0,
 };
 static const YYINT yygindex[] = {                         0,
-    0,    0,    0,   28,    1,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,  -17,    0,    0,    0,    0,    0,
+    0,    0,    0,   35,    3,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,  -14,    0,    0,    0,    0,
+    0,
 };
-#define YYTABLESIZE 42
-static const YYINT yytable[] = {                         35,
-    1,   14,   28,   29,   30,   14,   15,   10,   16,   17,
-   15,    4,   16,   17,   14,   39,   50,    5,   13,   15,
-   52,   16,   17,   42,   43,   44,   26,   11,   27,   32,
-   36,   33,   37,   38,   41,   40,    2,   48,   49,   18,
-    0,   47,
+#define YYTABLESIZE 47
+static const YYINT yytable[] = {                         13,
+   27,   36,   28,   13,   14,    1,   15,   16,   14,   10,
+   15,   16,   47,   48,   55,   13,   33,   17,   57,   42,
+   14,   17,   15,   16,    4,   29,   30,   31,   12,   45,
+    5,   46,   34,   17,   37,   38,   39,   41,   40,   44,
+    2,   43,   52,   53,   54,   18,   51,
 };
-static const YYINT yycheck[] = {                         17,
-  257,  259,  276,  277,  278,  259,  264,  277,  266,  267,
-  264,  258,  266,  267,  259,   33,  274,  264,  260,  264,
-  274,  266,  267,  276,  277,  278,  276,  263,  278,  277,
-  263,  275,  263,  260,  268,  265,    0,  263,  263,   12,
-   -1,   41,
+static const YYINT yycheck[] = {                        259,
+  276,   16,  278,  259,  264,  257,  266,  267,  264,  277,
+  266,  267,  276,  277,  274,  259,  277,  277,  274,   34,
+  264,  277,  266,  267,  258,  276,  277,  278,  260,  276,
+  264,  278,  275,  277,  260,  263,  263,  260,  263,  268,
+    0,  265,  263,  263,  263,   11,   44,
 };
 #define YYFINAL 2
 #ifndef YYDEBUG
 #define YYDEBUG 0
 #endif
 #define YYMAXTOKEN 279
-#define YYUNDFTOKEN 302
+#define YYUNDFTOKEN 303
 #define YYTRANSLATE(a) ((a) > YYMAXTOKEN ? YYUNDFTOKEN : (a))
 #if YYDEBUG
 static const char *const yyname[] = {
@@ -185,13 +188,14 @@ static const char *const yyname[] = {
 "TOKEN_ENTONCES","TOKEN_SUBIR_NOTA","TOKEN_BAJAR_NOTA",
 "TOKEN_CONDICION_PARA_REPETIR","TOKEN_SUBIR_OCTAVA","TOKEN_BAJAR_OCTAVA",
 "TOKEN_FIN","TOKEN_NO","NUMERO","VARIABLE_ID","STRING","TOKEN_RELACION",0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"illegal-symbol",
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"illegal-symbol",
 };
 static const char *const yyrule[] = {
 "$accept : programa",
 "$$1 :",
 "programa : TOKEN_INICIO_VARIABLES declaracion_variables TOKEN_FIN_VARIABLES $$1 sentenciasMain",
-"sentenciasMain : sentenciasMain sentencia",
+"sentenciasMain :",
+"sentenciasMain : sentenciasMain sentencia TOKEN_NUEVA_LINEA",
 "sentenciasBloque :",
 "sentenciasBloque : sentenciasBloque sentencia",
 "sentencia : sentencia_if",
@@ -206,14 +210,16 @@ static const char *const yyrule[] = {
 "tipo_print : NUMERO",
 "tipo_print : STRING",
 "declaracion_variables :",
-"declaracion_variables : declaracion_variables declaracion_variable TOKEN_NUEVA_LINEA",
+"declaracion_variables : declaracion_variables declaracion_variable",
 "declaracion_variable : declaracion_int",
 "declaracion_variable : declaracion_string",
 "declaracion_int : TOKEN_VARIABLE VARIABLE_ID TOKEN_ASIGNACION NUMERO TOKEN_NUEVA_LINEA",
 "declaracion_string : TOKEN_VARIABLE VARIABLE_ID TOKEN_ASIGNACION STRING TOKEN_NUEVA_LINEA",
 "tipo_asignacion : asignacion_normal",
 "tipo_asignacion : asignacion_string",
-"asignacion_string : TOKEN_VARIABLE VARIABLE_ID TOKEN_ASIGNACION STRING TOKEN_NUEVA_LINEA",
+"tipo_asignacion : asignacion_int",
+"asignacion_int : VARIABLE_ID TOKEN_ASIGNACION NUMERO TOKEN_NUEVA_LINEA",
+"asignacion_string : VARIABLE_ID TOKEN_ASIGNACION STRING TOKEN_NUEVA_LINEA",
 "asignacion_normal : TOKEN_VARIABLE VARIABLE_ID TOKEN_ASIGNACION expresion_matematica TOKEN_NUEVA_LINEA",
 "expresion : TOKEN_NO expresion",
 "expresion_matematica : VARIABLE_ID",
@@ -260,7 +266,7 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 361 "songFormat.y"
+#line 391 "songFormat.y"
 
 
 
@@ -287,7 +293,7 @@ void writeAsignation(char * variableName,int functionCounter,char* operand, int 
 
 	writeToFunctions("void _f%d(){%s %s=_f%d();}\n" ,thisFunctionCounter,variableName,operand,functionCounter);
 }
-#line 291 "y.tab.c"
+#line 297 "y.tab.c"
 
 #if YYDEBUG
 #include <stdio.h>		/* needed for printf */
@@ -490,13 +496,13 @@ yyreduce:
     switch (yyn)
     {
 case 1:
-#line 75 "songFormat.y"
+#line 76 "songFormat.y"
 	{
 	writeToMain("main(int argc, char *argv[]){\n");
 }
 break;
 case 2:
-#line 78 "songFormat.y"
+#line 79 "songFormat.y"
 	{
 	writeToMain("\n}\n");
 }
@@ -504,17 +510,23 @@ break;
 case 3:
 #line 84 "songFormat.y"
 	{
-	writeToMain("_f%d();\n",yystack.l_mark[0].numero);
+	yyval.numero = 0;
 }
 break;
 case 4:
-#line 89 "songFormat.y"
+#line 88 "songFormat.y"
+	{
+	writeToMain("_f%d();\n",yystack.l_mark[-1].numero);
+}
+break;
+case 5:
+#line 93 "songFormat.y"
 	{
 	yyval.numero = 0;
 }
 break;
-case 5:
-#line 92 "songFormat.y"
+case 6:
+#line 96 "songFormat.y"
 	{
 
 	int index = getNewFunctionIndex();
@@ -522,60 +534,60 @@ case 5:
 	writeToFunctions("void _f%d(){ _f%d(); _f%d(); }\n",index, yystack.l_mark[-1].numero, yystack.l_mark[0].numero);
 }
 break;
-case 6:
-#line 101 "songFormat.y"
+case 7:
+#line 105 "songFormat.y"
 	{
 	yyval.numero = yystack.l_mark[0].numero;
 }
 break;
-case 7:
-#line 106 "songFormat.y"
+case 8:
+#line 110 "songFormat.y"
 	{
 		yyval.numero = yystack.l_mark[0].numero;
 	}
 break;
-case 8:
-#line 111 "songFormat.y"
+case 9:
+#line 115 "songFormat.y"
 	{
 			yyval.numero = yystack.l_mark[0].numero;
 		}
 break;
-case 9:
-#line 116 "songFormat.y"
+case 10:
+#line 120 "songFormat.y"
 	{
 					yyval.numero = yystack.l_mark[0].numero;
 				}
 break;
-case 10:
-#line 123 "songFormat.y"
+case 11:
+#line 127 "songFormat.y"
 	{
 	yyval.numero = yystack.l_mark[0].numero;
 }
 break;
-case 11:
-#line 129 "songFormat.y"
+case 12:
+#line 134 "songFormat.y"
 	{
 int index = getNewFunctionIndex();
 yyval.numero = index;	
 writeToFunctions("void _f%d(){ while (  _f%d() ) { _f%d(); } }\n",index, yystack.l_mark[-3].numero, yystack.l_mark[-1].numero);		
 }
 break;
-case 12:
-#line 137 "songFormat.y"
+case 13:
+#line 142 "songFormat.y"
 	{		
 int index = getNewFunctionIndex();	
 		yyval.numero = index;
 		writeToFunctions("void _f%d(){ if (  _f%d() ) { _f%d(); } }\n",index, yystack.l_mark[-3].numero, yystack.l_mark[-1].numero);
 }
 break;
-case 13:
-#line 146 "songFormat.y"
+case 14:
+#line 151 "songFormat.y"
 	{
 	yyval.numero = yystack.l_mark[0].numero;
 }
 break;
-case 14:
-#line 150 "songFormat.y"
+case 15:
+#line 155 "songFormat.y"
 	{		
 		int index = getNewFunctionIndex();
 		yyval.numero = index;
@@ -593,24 +605,24 @@ case 14:
 		}
 }
 break;
-case 15:
-#line 166 "songFormat.y"
+case 16:
+#line 171 "songFormat.y"
 	{		
 		int index = getNewFunctionIndex();
 		yyval.numero = index;
 		writeToFunctions("void _f%d(){ printf(\"%s\\n\"); }\n",index, yystack.l_mark[0].string);
 }
 break;
-case 16:
-#line 171 "songFormat.y"
+case 17:
+#line 176 "songFormat.y"
 	{		
 		int index = getNewFunctionIndex();
 		yyval.numero = index;
 		writeToFunctions("void _f%d(){ printf(%s);printf(\"\\n\");}\n",index, yystack.l_mark[0].string);
 }
 break;
-case 21:
-#line 186 "songFormat.y"
+case 22:
+#line 191 "songFormat.y"
 	{
 	if(!containsKeyMap(yystack.l_mark[-3].string)){
         	int type = INT_CONST;
@@ -622,13 +634,14 @@ case 21:
         }
 }
 break;
-case 22:
-#line 199 "songFormat.y"
+case 23:
+#line 204 "songFormat.y"
 	{
 	if(!containsKeyMap(yystack.l_mark[-2].string)){
 	        	int type = STRING_CONST;
 	        	writeToFunctions("char* %s = %s;\n",yystack.l_mark[-3].string,yystack.l_mark[-1].string);
 	        	putMap(yystack.l_mark[-2].string,type);
+	        	printf("%s vale %s\n", yystack.l_mark[-3].string,yystack.l_mark[-1].string);
 	        }else{
 	        	printf("Linea: %d Error: declaracion previa de la nota %s\n",yylineno ,yystack.l_mark[-3].string);
 	        	exit(ERROR_CODE);
@@ -636,28 +649,53 @@ case 22:
 	        
 }
 break;
-case 24:
-#line 224 "songFormat.y"
+case 26:
+#line 231 "songFormat.y"
 	{
 	yyval.numero = yystack.l_mark[0].numero;
 }
 break;
-case 25:
-#line 231 "songFormat.y"
+case 27:
+#line 237 "songFormat.y"
 	{
-        if(!containsKeyMap(yystack.l_mark[-3].string)){
-        	int type = STRING_CONST;
-        	writeToFunctions("char* %s = %s;\n",yystack.l_mark[-3].string,yystack.l_mark[-1].string);
-        	putMap(yystack.l_mark[-2].string,type);
-        }else{
-        	printf("Linea: %d Error: declaracion previa del ingrediente %s\n",yylineno ,yystack.l_mark[-2].string);
-        	exit(ERROR_CODE);
-        }
-        
+	int type;
+	int exists = getValueMap(yystack.l_mark[-3].string, &type);
+	if(exists != 0) {
+		printf("Linea: %d Error: El ingrediente no fue declarado", yylineno, yystack.l_mark[-3].string);
+		exit(ERROR_CODE);
+	}
+	if (type == INT_CONST) 
+	{
+		int index = getNewFunctionIndex();
+		writeAsignation(yystack.l_mark[-3].string,yystack.l_mark[-1].string,"+", index);
+		yyval.numero = index;
+	}
+	else {
+		printf("Linea: %d Error: El ingrediente no es de ese tipo", yylineno, yystack.l_mark[-3].string);
+	}
 }
 break;
-case 26:
-#line 245 "songFormat.y"
+case 28:
+#line 256 "songFormat.y"
+	{
+	int type;
+	int exists = getValueMap(yystack.l_mark[-3].string,&type);
+	if(exists != 0){
+		printf("Linea: %d Error: El ingrediente %s no fue declarado\n", yylineno ,yystack.l_mark[-3].string);
+		exit(ERROR_CODE);
+	}
+	if(type == STRING_CONST){
+			int index = getNewFunctionIndex();
+			writeToFunctions("void _f%d(){%s = %s;}\n" ,index,yystack.l_mark[-3].string,yystack.l_mark[-1].string);
+			yyval.numero = index;
+	}else{
+		printf("Linea: %d Error: Se le esta poniendo un String al ingrediente %s, que es un int", yylineno ,yystack.l_mark[-3].string);
+		exit(ERROR_CODE);
+	}
+}
+break;
+case 29:
+#line 275 "songFormat.y"
 	{
 
 	int type;
@@ -677,16 +715,16 @@ case 26:
 	}
 }
 break;
-case 27:
-#line 267 "songFormat.y"
+case 30:
+#line 297 "songFormat.y"
 	{
 int index = getNewFunctionIndex();
 yyval.numero = index;	
 writeToFunctions("int _f%d(){ return !_f%d();}\n",index, yystack.l_mark[0].numero);
 }
 break;
-case 28:
-#line 275 "songFormat.y"
+case 31:
+#line 305 "songFormat.y"
 	{
 	int type;
 	int exists = getValueMap(yystack.l_mark[0].string,&type);
@@ -704,32 +742,32 @@ case 28:
 	}
 }
 break;
-case 29:
-#line 291 "songFormat.y"
+case 32:
+#line 321 "songFormat.y"
 	{
 int index = getNewFunctionIndex();
 yyval.numero = index;	
 writeToFunctions("int _f%d(){ return %s;}\n",index, yystack.l_mark[0].string);
 }
 break;
-case 30:
-#line 299 "songFormat.y"
+case 33:
+#line 329 "songFormat.y"
 	{
 int index = getNewFunctionIndex();
 yyval.numero = index;
 writeToFunctions("int _f%d(){ return _f%d() %s _f%d();}\n",index, yystack.l_mark[-2].numero,yystack.l_mark[-1].string, yystack.l_mark[0].numero);
 }
 break;
-case 32:
-#line 333 "songFormat.y"
+case 35:
+#line 363 "songFormat.y"
 	{
 int index = getNewFunctionIndex();
 yyval.numero = index;	
 writeToFunctions("int _f%d(){ return _f%d();}\n",index, yystack.l_mark[-1].numero);
 }
 break;
-case 33:
-#line 339 "songFormat.y"
+case 36:
+#line 369 "songFormat.y"
 	{
 int type;
 int exists = getValueMap(yystack.l_mark[0].string,&type);
@@ -743,15 +781,15 @@ if(exists == 0){
 }
 }
 break;
-case 34:
-#line 352 "songFormat.y"
+case 37:
+#line 382 "songFormat.y"
 	{
 int index = getNewFunctionIndex();
 yyval.numero = index;	
 writeToFunctions("int _f%d(){ return %s;}\n",index, yystack.l_mark[0].string);
 }
 break;
-#line 755 "y.tab.c"
+#line 793 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;
