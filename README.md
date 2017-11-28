@@ -1,26 +1,19 @@
 # TLA-2017Q2
 
-P: programa
-C: comentario
-S: Lista de expresiones
-I: instruccion simple
-N: sentencia de control
-T: texto
-L: letra
-D: digito
-B: bucle
-F: condicional
-O: comparaci´on
-E: expresi´on
-M: operador de comparaci´on
-H: t´ermino
-J: factor
-K: constante
-V : variable
-A: asignaci´on
-R: lectura
-W: escritura
-F_: Funcion
-T_: Termino
-A_: Argumentos
-A': Auxiliar Argumentos
+## Materiales
+ 
+* Archivo de construcción: `install.sh`, ubicado en el directorio raíz.
+* Informe: `docs/Informe.pdf`.
+* Códigos fuente: carpetas `src` (código C), y `ly` (contiene la gramática y los archivos generados por lex y yacc).
+ 
+## Compilación
+
+Para compilar correr en el directorio raíz:
+
+```
+./install.sh
+```
+Esto genera un binario en la raíz del directorio con el nombre `compiler`:
+
+## Ejecución
+TODO
