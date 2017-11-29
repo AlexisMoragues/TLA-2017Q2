@@ -54,19 +54,18 @@ void yyerror(char* msg){
 %type <numero> sentencia_if
 %type <numero> sentencia_asignacion
 %type <numero> sentencia_while
-%type <numero> sentenciasMain
 %type <numero> tipo_print
 %type <numero> sentencia_print
-%type <numero> sentenciasBloque sentenciasMain sentencia
+%type <numero> sentenciasBloque sentencia
 %type <numero> tipo_asignacion
 %type <numero> asignacion_normal
-/*
 %type <numero> asignacion_subir_tono
 %type <numero> asignacion_bajar_tono
+/*
 %type <numero> asignacion_subir_octava
 %type <numero> asignacion_bajar_octava
 */
-%type <numero> asignacion_string asignacion_int
+%type <numero> asignacion_string 
 %type <numero> expresion expresion_relacional expresion_matematica operando 
 %start programa
 %% 
@@ -81,10 +80,8 @@ programa:	TOKEN_INICIO_VARIABLES  declaracion_variables TOKEN_FIN_VARIABLES
 }
 ;
 
-sentenciasMain:	{
-	$$ = 0;
-}
-|sentenciasMain sentencia TOKEN_NUEVA_LINEA
+sentenciasMain:	/* blank */
+|sentenciasMain sentencia
 {
 	writeToMain("_f%d();\n",$2);
 }
@@ -222,18 +219,17 @@ declaracion_string: TOKEN_VARIABLE VARIABLE_ID TOKEN_ASIGNACION STRING TOKEN_NUE
 
 
 tipo_asignacion: asignacion_normal
-/*|	asignacion_subir_tono
+|	asignacion_subir_tono
 |	asignacion_bajar_tono
-|	asignacion_bajar_octava
+/*|	asignacion_bajar_octava
 |	asignacion_subir_octava*/
 |	asignacion_string
-|	asignacion_int
 {
 	$$ = $1;
 }
 ;
 
-asignacion_int: VARIABLE_ID TOKEN_ASIGNACION NUMERO TOKEN_NUEVA_LINEA 
+asignacion_subir_tono: VARIABLE_ID TOKEN_SUBIR_NOTA expresion_matematica TOKEN_NUEVA_LINEA 
 {
 	int type;
 	int exists = getValueMap($1, &type);
@@ -251,7 +247,26 @@ asignacion_int: VARIABLE_ID TOKEN_ASIGNACION NUMERO TOKEN_NUEVA_LINEA
 		printf("Linea: %d Error: El ingrediente no es de ese tipo", yylineno, $1);
 	}
 }
-
+;
+asignacion_bajar_tono: VARIABLE_ID TOKEN_BAJAR_NOTA expresion_matematica TOKEN_NUEVA_LINEA 
+{
+	int type;
+	int exists = getValueMap($1, &type);
+	if(exists != 0) {
+		printf("Linea: %d Error: El ingrediente no fue declarado", yylineno, $1);
+		exit(ERROR_CODE);
+	}
+	if (type == INT_CONST) 
+	{
+		int index = getNewFunctionIndex();
+		writeAsignation($1,$3,"-", index);
+		$$ = index;
+	}
+	else {
+		printf("Linea: %d Error: El ingrediente no es de ese tipo", yylineno, $1);
+	}
+}
+;
 asignacion_string: VARIABLE_ID TOKEN_ASIGNACION STRING TOKEN_NUEVA_LINEA
 {
 	int type;
@@ -359,13 +374,14 @@ asignacion_bajar_octava: TOKEN_VARIABLE VARIABLE_ID TOKEN_BAJAR_OCTAVA expresion
 ;
 */
 
+
+
 operando: TOKEN_PARENTSIS_APERTURA  expresion TOKEN_PARENTESIS_CIERRE
 {
 int index = getNewFunctionIndex();
 $$ = index;	
 writeToFunctions("int _f%d(){ return _f%d();}\n",index, $2);
 }
-
 |VARIABLE_ID {
 int type;
 int exists = getValueMap($1,&type);
@@ -378,7 +394,6 @@ if(exists == 0){
 	exit(ERROR_CODE);
 }
 }
-
 | NUMERO{
 int index = getNewFunctionIndex();
 $$ = index;	
@@ -410,7 +425,6 @@ int getNewFunctionIndex() {
 
 
 void writeAsignation(char * variableName,int functionCounter,char* operand, int thisFunctionCounter){
-
 
 	writeToFunctions("void _f%d(){%s %s=_f%d();}\n" ,thisFunctionCounter,variableName,operand,functionCounter);
 }
