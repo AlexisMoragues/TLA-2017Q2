@@ -41,6 +41,8 @@ void yyerror(char* msg){
 %token TOKEN_BAJAR_OCTAVA
 %token TOKEN_FIN
 %token TOKEN_NO
+%token TOKEN_O_CONDICIONAL
+%token TOKEN_Y_CONDICIONAL
 %token <string> NUMERO
 %token <string> VARIABLE_ID
 %token <string> STRING
@@ -61,6 +63,9 @@ void yyerror(char* msg){
 %type <numero> asignacion_normal
 %type <numero> asignacion_subir_tono
 %type <numero> asignacion_bajar_tono
+%type <numero> expresionO
+%type <numero> expresionY
+
 /*
 %type <numero> asignacion_subir_octava
 %type <numero> asignacion_bajar_octava
@@ -118,6 +123,7 @@ sentencia: sentencia_if
 					$$ = $1;
 				}
 ;
+
 
 
 sentencia_asignacion:	tipo_asignacion
@@ -234,7 +240,7 @@ asignacion_subir_tono: VARIABLE_ID TOKEN_SUBIR_NOTA expresion_matematica TOKEN_N
 	int type;
 	int exists = getValueMap($1, &type);
 	if(exists != 0) {
-		printf("Linea: %d Error: El ingrediente no fue declarado", yylineno, $1);
+		printf("Linea: %d Error: La nota no fue declarada", yylineno, $1);
 		exit(ERROR_CODE);
 	}
 	if (type == INT_CONST) 
@@ -244,7 +250,7 @@ asignacion_subir_tono: VARIABLE_ID TOKEN_SUBIR_NOTA expresion_matematica TOKEN_N
 		$$ = index;
 	}
 	else {
-		printf("Linea: %d Error: El ingrediente no es de ese tipo", yylineno, $1);
+		printf("Linea: %d Error: La nota no es de ese tipo", yylineno, $1);
 	}
 }
 ;
@@ -253,7 +259,7 @@ asignacion_bajar_tono: VARIABLE_ID TOKEN_BAJAR_NOTA expresion_matematica TOKEN_N
 	int type;
 	int exists = getValueMap($1, &type);
 	if(exists != 0) {
-		printf("Linea: %d Error: El ingrediente no fue declarado", yylineno, $1);
+		printf("Linea: %d Error: La nota no fue declarada", yylineno, $1);
 		exit(ERROR_CODE);
 	}
 	if (type == INT_CONST) 
@@ -263,7 +269,7 @@ asignacion_bajar_tono: VARIABLE_ID TOKEN_BAJAR_NOTA expresion_matematica TOKEN_N
 		$$ = index;
 	}
 	else {
-		printf("Linea: %d Error: El ingrediente no es de ese tipo", yylineno, $1);
+		printf("Linea: %d Error: La nota no es de ese tipo", yylineno, $1);
 	}
 }
 ;
@@ -272,7 +278,7 @@ asignacion_string: VARIABLE_ID TOKEN_ASIGNACION STRING TOKEN_NUEVA_LINEA
 	int type;
 	int exists = getValueMap($1,&type);
 	if(exists != 0){
-		printf("Linea: %d Error: El ingrediente %s no fue declarado\n", yylineno ,$1);
+		printf("Linea: %d Error: La nota %s no fue declarada\n", yylineno ,$1);
 		exit(ERROR_CODE);
 	}
 	if(type == STRING_CONST){
@@ -314,6 +320,35 @@ int index = getNewFunctionIndex();
 $$ = index;	
 writeToFunctions("int _f%d(){ return !_f%d();}\n",index, $2);
 }
+| expresionO
+;
+
+
+expresionO: expresionO TOKEN_O_CONDICIONAL expresionY 
+{
+int index = getNewFunctionIndex();
+$$ = index;	
+writeToFunctions("int _f%d(){ return _f%d() || _f%d();}\n",index, $1, $3);
+}
+| expresionY
+;
+expresionY: expresionY  TOKEN_Y_CONDICIONAL expresion_relacional 
+{
+int index = getNewFunctionIndex();
+$$ = index;	
+writeToFunctions("int _f%d(){ return _f%d() && _f%d();}\n",index, $1, $3);
+
+
+}
+|	expresion_relacional
+;
+expresion_relacional: expresion_relacional  TOKEN_RELACION operando
+{
+int index = getNewFunctionIndex();
+$$ = index;
+writeToFunctions("int _f%d(){ return _f%d() %s _f%d();}\n",index, $1,$2, $3);
+}  
+|	operando
 ;
 
 expresion_matematica: VARIABLE_ID
@@ -321,7 +356,7 @@ expresion_matematica: VARIABLE_ID
 	int type;
 	int exists = getValueMap($1,&type);
 	if(exists != 0){
-		printf("Linea: %d Error: El ingrediente %s no fue declarado\n", yylineno,$1);
+		printf("Linea: %d Error: La nota %s no fue declarada\n", yylineno,$1);
 		exit(ERROR_CODE);
 	}
 	if(type == INT_CONST){
@@ -329,7 +364,7 @@ expresion_matematica: VARIABLE_ID
 			$$ = index;	
 			writeToFunctions("int _f%d(){ return %s;}\n",index, $1);
 	}else{
-		printf("Linea: %d Error: El ingrediente %s no es un int\n", yylineno ,$1);
+		printf("Linea: %d Error: La nota %s no es un int\n", yylineno ,$1);
 		exit(ERROR_CODE);
 	}
 }
@@ -390,7 +425,7 @@ if(exists == 0){
 	$$ = index;	
 	writeToFunctions("int _f%d(){ return %s;}\n",index, $1);	
 }else{
-	printf("El ingrediente %s no fue declarado\n", $1 );
+	printf("La nota %s no fue declarada\n", $1 );
 	exit(ERROR_CODE);
 }
 }
