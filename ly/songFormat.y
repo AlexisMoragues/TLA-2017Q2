@@ -5,14 +5,14 @@
 #define ERROR_CODE -42
 #include <stdio.h>
 #include <stdlib.h>
-#include "../src/mapImpl.h"
 #include "../src/tempWriter.h"
+#include "../src/mapImpl.h"
 extern int yylineno;
 int counterFunction = 1; 
 int getNewFunctionIndex();
 void writeAsignation(char * variableName,int functionCounter,char* operand, int thisFunctionCounter);
 void yyerror(char* msg){
-	printf("Error de syntaxis cerca de la linea %d\n",yylineno);
+	printf("Error de syntaxis en la linea %d\n",yylineno);
 }
 %}
 
@@ -40,6 +40,14 @@ void yyerror(char* msg){
 %token TOKEN_BAJAR_OCTAVA
 %token TOKEN_FIN
 %token TOKEN_NO
+%token TOKEN_DO
+%token TOKEN_RE
+%token TOKEN_MI
+%token TOKEN_FA
+%token TOKEN_SOL
+%token TOKEN_LA
+%token TOKEN_SI
+%token TOKEN_DIBUJAR
 %token TOKEN_O_CONDICIONAL
 %token TOKEN_Y
 %token <string> NUMERO
@@ -61,6 +69,14 @@ void yyerror(char* msg){
 %type <numero> asignacion_normal
 %type <numero> asignacion_subir_tono
 %type <numero> asignacion_bajar_tono
+%type <numero> asignacion_dibujar
+%type <numero> asignacion_dibujar_do
+%type <numero> asignacion_dibujar_re
+%type <numero> asignacion_dibujar_mi
+%type <numero> asignacion_dibujar_fa
+%type <numero> asignacion_dibujar_sol
+%type <numero> asignacion_dibujar_la
+%type <numero> asignacion_dibujar_si
 %type <numero> expresionO
 %type <numero> expresionY
 
@@ -207,7 +223,6 @@ declaracion_string: TOKEN_VARIABLE VARIABLE_ID TOKEN_ASIGNACION STRING TOKEN_NUE
 	        	int type = STRING_CONST;
 	        	writeToFunctions("char* %s = %s;\n",$2,$4);
 	        	putMap($3,type);
-	        	printf("%s vale %s\n", $2,$4);
 	        }else{
 	        	printf("Linea: %d Error: declaracion previa de la nota %s\n",yylineno ,$2);
 	        	exit(ERROR_CODE);
@@ -222,10 +237,82 @@ tipo_asignacion: asignacion_normal
 /*|	asignacion_bajar_octava
 |	asignacion_subir_octava*/
 |	asignacion_string
+|	asignacion_dibujar
 {
 	$$ = $1;
 }
 ;
+
+asignacion_dibujar: asignacion_dibujar_do
+|asignacion_dibujar_re
+|asignacion_dibujar_mi
+|asignacion_dibujar_fa
+|asignacion_dibujar_sol
+|asignacion_dibujar_si
+|asignacion_dibujar_la
+{
+	$$ = $1;
+}
+;
+
+asignacion_dibujar_do: TOKEN_DIBUJAR TOKEN_DO TOKEN_NUEVA_LINEA
+{
+		int index = getNewFunctionIndex();
+		$$ = index;
+		writeToFunctions("void _f%d(){ print_do();}\n",index);
+}
+;
+
+asignacion_dibujar_re: TOKEN_DIBUJAR TOKEN_RE TOKEN_NUEVA_LINEA
+{
+	int index = getNewFunctionIndex();
+		$$ = index;
+		writeToFunctions("void _f%d(){ print_re();}\n",index);
+}
+;
+
+asignacion_dibujar_mi: TOKEN_DIBUJAR TOKEN_MI TOKEN_NUEVA_LINEA
+{
+	int index = getNewFunctionIndex();
+		$$ = index;
+		writeToFunctions("void _f%d(){ print_mi();}\n",index);
+}
+;
+
+asignacion_dibujar_fa: TOKEN_DIBUJAR TOKEN_FA TOKEN_NUEVA_LINEA
+{
+	int index = getNewFunctionIndex();
+		$$ = index;
+		writeToFunctions("void _f%d(){ print_fa();}\n",index);
+}
+;
+
+asignacion_dibujar_sol: TOKEN_DIBUJAR TOKEN_SOL TOKEN_NUEVA_LINEA
+{
+	int index = getNewFunctionIndex();
+		$$ = index;
+		writeToFunctions("void _f%d(){ print_sol();}\n",index);
+}
+;
+
+asignacion_dibujar_la: TOKEN_DIBUJAR TOKEN_LA TOKEN_NUEVA_LINEA
+{
+	int index = getNewFunctionIndex();
+		$$ = index;
+		writeToFunctions("void _f%d(){ print_la();}\n",index);
+}
+;
+
+asignacion_dibujar_si: TOKEN_DIBUJAR TOKEN_SI TOKEN_NUEVA_LINEA
+{
+	int index = getNewFunctionIndex();
+		$$ = index;
+		writeToFunctions("void _f%d(){ print_si();}\n",index);
+}
+;
+
+
+
 
 asignacion_subir_tono: VARIABLE_ID TOKEN_SUBIR_NOTA expresion_matematica TOKEN_NUEVA_LINEA 
 {
@@ -284,18 +371,18 @@ asignacion_string: VARIABLE_ID TOKEN_ASIGNACION STRING TOKEN_NUEVA_LINEA
 }
 ;
 
-asignacion_normal: TOKEN_VARIABLE VARIABLE_ID TOKEN_ASIGNACION expresion_matematica TOKEN_NUEVA_LINEA
+asignacion_normal: VARIABLE_ID TOKEN_ASIGNACION expresion_matematica TOKEN_NUEVA_LINEA
 {
 
 	int type;
-	int exists = getValueMap($2,&type);
+	int exists = getValueMap($1,&type);
 	if(exists!=0) {
 		printf("error");
 		exit(ERROR_CODE);
 	}
 	if(type == INT_CONST) {
 		int index = getNewFunctionIndex();
-		writeAsignation($2,$4," ", index);
+		writeAsignation($1,$3," ", index);
 		$$ = index;
 	}
 	else {

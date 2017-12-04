@@ -28,6 +28,7 @@ int openMain() {
 		return 0;
 	}
 	writeToMain("#include \"%s\"\n", tempFunctionsName);
+	writeToMain("#include \"%s\"\n", "lalala.c");
 	return 1;
 }
 

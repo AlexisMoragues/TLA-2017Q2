@@ -1,21 +1,8 @@
 #include <stdio.h>
 
-int main( int argc, const char* argv[] )
-{
-	print_mi();
-		printf("*******\n");
-	print_fa();
-		printf("*******\n");
-	print_sol();
-		printf("*******\n");
-	print_la();
-		printf("*******\n");
-	print_si();
-		printf("*******\n");
-
-}
 
 void print_do(void){
+	printf("EN CLAVE DE SOL\n");
 	printf("___\n");
 	printf("___\n");
 	printf("___\n");
@@ -26,6 +13,7 @@ void print_do(void){
 
 
 void print_re(void){
+	printf("EN CLAVE DE SOL\n");
 	printf("___\n");
 	printf("___\n");
 	printf("___\n");
@@ -35,6 +23,7 @@ void print_re(void){
 }
 
 void print_mi(void){
+	printf("EN CLAVE DE SOL\n");
 	printf("___\n");
 	printf("___\n");
 	printf("___\n");
@@ -43,6 +32,7 @@ void print_mi(void){
 }
 
 void print_fa(void){
+	printf("EN CLAVE DE SOL\n");
 	printf("___\n");
 	printf("___\n");
 	printf("___\n");
@@ -51,6 +41,7 @@ void print_fa(void){
 }
 
 void print_sol(void){
+	printf("EN CLAVE DE SOL\n");
 	printf("___\n");
 	printf("___\n");
 	printf("___\n");
@@ -59,6 +50,7 @@ void print_sol(void){
 }
 
 void print_la(void){
+	printf("EN CLAVE DE SOL\n");
 	printf("___\n");
 	printf("___\n");
 	printf("___\n");
@@ -67,6 +59,7 @@ void print_la(void){
 }
 
 void print_si(void){
+	printf("EN CLAVE DE SOL\n");
 	printf("___\n");
 	printf("___\n");
 	printf("-Ø-\n");

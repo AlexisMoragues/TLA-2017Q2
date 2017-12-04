@@ -20,9 +20,17 @@
 "preparado" {BEGIN(PREPARADO); return TOKEN_FIN_VARIABLES;}
 "var"	return TOKEN_VARIABLE;
 "mientras"	return TOKEN_MIENTRAS;
-"repetir"	return TOKEN_REPETIR;
+"coda"	return TOKEN_REPETIR;
 "cuando" return TOKEN_CUANDO;
 "entonces" return TOKEN_ENTONCES;
+"dibujar" return TOKEN_DIBUJAR;
+"DO"	return TOKEN_DO;
+"RE"	return TOKEN_RE;
+"MI"	return TOKEN_MI;
+"FA"	return TOKEN_FA;
+"SOL"	return TOKEN_SOL;
+"LA"	return TOKEN_LA;
+"SI"	return TOKEN_SI;
 "("		return TOKEN_PARENTSIS_APERTURA;
 ")"		return TOKEN_PARENTESIS_CIERRE;
 "subir"	return TOKEN_SUBIR_NOTA;
@@ -32,7 +40,7 @@
 "fin" return TOKEN_FIN;
 ";"	return TOKEN_NUEVA_LINEA;
 "y"	|
-"e"		{ yylval.string=strdup(yytext); return TOKEN_Y; }
+"unisono"		{ yylval.string=strdup(yytext); return TOKEN_Y; }
 "="		return TOKEN_ASIGNACION;
 "=="	|
 "!="	|

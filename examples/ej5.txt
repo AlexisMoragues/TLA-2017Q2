@@ -1,0 +1,12 @@
+afinando
+var a = 10;
+var b = "Jorgito";
+preparado
+dibujar DO;
+dibujar RE;
+dibujar MI;
+dibujar FA;
+dibujar SOL;
+dibujar LA;
+dibujar SI;
+.

@@ -1,0 +1,11 @@
+afinando
+var a = 10;
+var b = "String";
+preparado
+mientras a<15
+coda
+a subir 1;
+mostrar a
+mostrar b
+fin
+.

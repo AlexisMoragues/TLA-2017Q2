@@ -4,8 +4,7 @@ var b = 30;
 preparado
 mientras a<15 unisono b>9
 coda
-a = 30;
+a subir 2;
 mostrar a
-mostrar "Entro"
 fin
 .

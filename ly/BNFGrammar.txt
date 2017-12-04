@@ -1,0 +1,33 @@
+programa = 	"afinando"  declaracion_variables "preparado" sentenciasMain
+
+declaracion_variables = [declaracionVariables declaracionVariable ";"]
+declaracion_variable = declaracion_int | declaracionString;
+declaracion_int = "var" variable_id "=" numero ";"
+declaracion_string = var variable_id "=" string ";"
+
+
+sentencias = [ sentencias sentencia ] 
+sentencia = 	sentencia_if | sentencia_asignacion | sentencia_while
+
+sentencia_asignacion = tipo_asignacion ";"
+sentencia_if = "cuando" expresion "entonces" sentenciasBloque "fin"
+sentencia_while = "mientras" expresion "coda" sentenciasBloque "fin"
+ 
+tipo_asignacion = asignacion_normal | asignacion_subir_tono | asignacion_bajar_tono | asignacion_string
+
+asignacion_subir_tono = variable_id "subir" expresion_matematica ";" 
+asignacion_bajar_tono = variable_id "bajar" expresion_matematica ";" 
+asignacion_string = variable_id "=" STRING ";"
+asignacion_normal = variable_id "=" expresion_matematica ";"
+
+expresion = ("!" expresion) | expresionO
+expresionO = (expresionO "asincope" expresionY) | expresionY
+expresionY = (expresionY  ("y"/"unisono") expresion_relacional) | expresion_relacional
+expresion_relacional = (expresion_relacional ("<"/">"/">="/"<="/"=="/"!=") operando) | operando
+expresion_matematica = variable_id | numero
+
+operando = ("("  expresion ")") | variable_id | numero
+
+variable_id = ALPHA *(ALPHA/"_")
+string = 1*(DIGIT/ALPHA)
+numero = 1*DIGIT
