@@ -13,7 +13,10 @@ Para compilar correr en el directorio raíz:
 ```
 ./install.sh
 ```
-Esto genera un binario en la raíz del directorio con el nombre `compiler`:
+Esto genera un binario en la raíz del directorio con el nombre `compiler`
+
+Dependencias: lex y yacc
 
 ## Ejecución
-TODO
+
+Para ejecutar el compilador se debe correr el script ´compile.sh [archivo]´ con archivo como argumento que contiene el codigo en lenguaje song

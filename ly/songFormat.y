@@ -5,8 +5,8 @@
 #define ERROR_CODE -42
 #include <stdio.h>
 #include <stdlib.h>
-#include "tempWriter.h"
-#include "mapImpl.h"
+#include "../src/mapImpl.h"
+#include "../src/tempWriter.h"
 extern int yylineno;
 int counterFunction = 1; 
 int getNewFunctionIndex();
@@ -25,7 +25,6 @@ void yyerror(char* msg){
 %token TOKEN_INICIO_VARIABLES
 %token TOKEN_FIN_VARIABLES
 %token TOKEN_MOSTRAR
-%token TOKEN_ASIGNACION 
 %token TOKEN_PARENTSIS_APERTURA
 %token TOKEN_PARENTESIS_CIERRE	
 %token TOKEN_NUEVA_LINEA 
@@ -58,7 +57,6 @@ void yyerror(char* msg){
 %type <numero> sentencia_while
 %type <numero> tipo_print
 %type <numero> sentencia_print
-%type <numero> sentenciasBloque sentencia
 %type <numero> tipo_asignacion
 %type <numero> asignacion_normal
 %type <numero> asignacion_subir_tono

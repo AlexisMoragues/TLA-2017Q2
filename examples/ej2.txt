@@ -3,7 +3,7 @@ var a = 10;
 var b = 30;
 preparado
 cuando a<15 y b>9
-entonces
-mostrar "Entro"
+    entonces
+    mostrar "Entro"
 fin
 .

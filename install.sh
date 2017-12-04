@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # directorio lex/yacc
-LY=tbd
+LY=ly
 
 # creación de archivos lex y yacc
 cd $LY
-flex ./sg.l
-yacc -d ./sg.y
+yacc ./songFormat.y -d
+flex ./songFormat.l
 cd ..
 
 # creación del binario
