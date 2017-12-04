@@ -23,16 +23,16 @@
 "repetir"	return TOKEN_REPETIR;
 "cuando" return TOKEN_CUANDO;
 "entonces" return TOKEN_ENTONCES;
-"cifrado" return TOKEN_CIFRADO;
 "("		return TOKEN_PARENTSIS_APERTURA;
 ")"		return TOKEN_PARENTESIS_CIERRE;
 "subir"	return TOKEN_SUBIR_NOTA;
 "bajar"	return TOKEN_BAJAR_NOTA;
 "asincope" return TOKEN_O_CONDICIONAL;
-"unisono" return TOKEN_Y_CONDICIONAL;
 "mostrar" return TOKEN_MOSTRAR;
 "fin" return TOKEN_FIN;
 ";"	return TOKEN_NUEVA_LINEA;
+"y"	|
+"e"		{ yylval.string=strdup(yytext); return TOKEN_Y; }
 "="		return TOKEN_ASIGNACION;
 "=="	|
 "!="	|

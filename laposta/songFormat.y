@@ -42,7 +42,7 @@ void yyerror(char* msg){
 %token TOKEN_FIN
 %token TOKEN_NO
 %token TOKEN_O_CONDICIONAL
-%token TOKEN_Y_CONDICIONAL
+%token TOKEN_Y
 %token <string> NUMERO
 %token <string> VARIABLE_ID
 %token <string> STRING
@@ -133,7 +133,7 @@ sentencia_asignacion:	tipo_asignacion
 ;
 
 
-sentencia_while: TOKEN_MIENTRAS  expresion TOKEN_REPETIR sentenciasBloque TOKEN_FIN
+sentencia_while: TOKEN_MIENTRAS expresion TOKEN_REPETIR sentenciasBloque TOKEN_FIN
 {
 int index = getNewFunctionIndex();
 $$ = index;	
@@ -217,12 +217,6 @@ declaracion_string: TOKEN_VARIABLE VARIABLE_ID TOKEN_ASIGNACION STRING TOKEN_NUE
 	        
 }
 ;
-
-
-
-
-
-
 
 tipo_asignacion: asignacion_normal
 |	asignacion_subir_tono
@@ -332,17 +326,17 @@ writeToFunctions("int _f%d(){ return _f%d() || _f%d();}\n",index, $1, $3);
 }
 | expresionY
 ;
-expresionY: expresionY  TOKEN_Y_CONDICIONAL expresion_relacional 
+
+expresionY: expresionY  TOKEN_Y expresion_relacional 
 {
 int index = getNewFunctionIndex();
 $$ = index;	
 writeToFunctions("int _f%d(){ return _f%d() && _f%d();}\n",index, $1, $3);
-
-
 }
-|	expresion_relacional
+| expresion_relacional
 ;
-expresion_relacional: expresion_relacional  TOKEN_RELACION operando
+
+expresion_relacional: expresion_relacional TOKEN_RELACION operando
 {
 int index = getNewFunctionIndex();
 $$ = index;
