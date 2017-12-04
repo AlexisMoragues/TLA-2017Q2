@@ -19,12 +19,12 @@ Dependencias: lex y yacc, se pueden obtener descargando los paquetes flex y biso
 
 ## Ejecución
 
-Para ejecutar el compilador se debe correr el script ´compile.sh´ de la siguiente manera:
+Para ejecutar el compilador se debe correr el script `compile.sh` de la siguiente manera:
 
 ```
 ./compile.sh [archivo_entrada] [archivo_salida]
 ```
-* archivo_entrada : contiene el codigo en lenguaje "song"
-* archivo_salida  : nombre del binario de salida (opcional, el default es "song.out")
+* archivo_entrada : contiene el codigo en lenguaje `song`
+* archivo_salida  : nombre del binario de salida (opcional, el default es `song.out`)
 
-Ademas se puede ejecutar el compilador en modo interprete ejecutando directamente el binario ´compiler´
+Ademas se puede ejecutar el compilador en modo interprete ejecutando directamente el binario `compiler`
