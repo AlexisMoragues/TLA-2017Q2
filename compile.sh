@@ -9,7 +9,7 @@ fi
 BIN=$2
 if [ -z "$2" ]
   then
-    BIN="song"
+    BIN="song.out"
 fi
 
 ./compiler < $1
