@@ -1,9 +1,13 @@
+
+/* prueba OR (asincope) */
+
 afinando
 var a = 10;
 var b = 30;
 preparado
+
 mientras a<15 asincope b>9
 coda
-mostrar "Entro"
+mostrar "Entro";
 fin
 .

@@ -27,6 +27,8 @@ int openMain() {
 	if(!isOpen(mainF)) {
 		return 0;
 	}
+
+    writeToMain("#include <%s>\n", "stdio.h");
 	writeToMain("#include \"%s\"\n", tempFunctionsName);
 	writeToMain("#include \"%s\"\n", "lalala.c");
 	return 1;

@@ -12,7 +12,7 @@ int counterFunction = 1;
 int getNewFunctionIndex();
 void writeAsignation(char * variableName,int functionCounter,char* operand, int thisFunctionCounter);
 void yyerror(char* msg){
-	printf("Error de syntaxis en la linea %d\n",yylineno);
+	printf("Error de sintaxis en la linea %d\n",yylineno-1);
 }
 %}
 
@@ -92,10 +92,10 @@ void yyerror(char* msg){
 
 programa:	TOKEN_INICIO_VARIABLES  declaracion_variables TOKEN_FIN_VARIABLES
 {
-	writeToMain("main(int argc, char *argv[]){\n");
+	writeToMain("int main(int argc, char *argv[]){\n");
 }sentenciasMain
 {
-	writeToMain("\n}\n");
+	writeToMain("\n return 0;}\n");
 }
 ;
 
@@ -164,7 +164,7 @@ int index = getNewFunctionIndex();
 ;
 
 
-sentencia_print: TOKEN_MOSTRAR tipo_print
+sentencia_print: TOKEN_MOSTRAR tipo_print TOKEN_NUEVA_LINEA
 {
 	$$ = $2;
 };

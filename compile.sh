@@ -13,4 +13,4 @@ if [ -z "$2" ]
 fi
 
 ./compiler < $1
-gcc songMain.c -o $BIN
+gcc songMain.c -o $BIN &> /dev/null

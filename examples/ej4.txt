@@ -1,10 +1,39 @@
+
+/* prueba AND e IF anidados */
+
 afinando
 var a = 10;
 var b = 30;
 preparado
-mientras a<15 unisono b>9
-coda
-a subir 2;
-mostrar a
+
+mientras a<15 coda
+    a subir 2;
+    b bajar 1;
+    mostrar a;
+fin
+
+mostrar b;
+
+cuando b==28
+    entonces
+    mostrar "se resto 2";
+
+fin
+
+cuando b==27 unisono a==16
+    entonces
+    mostrar "success";
+fin
+
+cuando b==27
+    entonces
+    cuando a == 16
+        entonces
+        mostrar "success";
+    fin
+    cuando a == 17
+        entonces
+        mostrar "failure";
+    fin
 fin
 .

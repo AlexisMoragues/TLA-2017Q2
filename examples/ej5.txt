@@ -1,7 +1,10 @@
+/* prueba DIBUJAR */
+
 afinando
 var a = 10;
 var b = "Jorgito";
 preparado
+
 dibujar DO;
 dibujar RE;
 dibujar MI;

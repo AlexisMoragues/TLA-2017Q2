@@ -1,11 +1,14 @@
+
+/* prueba impresion de strings y AND (unisono) */
+
 afinando
 var a = 10;
 var b = 30;
 preparado
-mientras a<15 unisono b>9
-coda
+
+mientras a<15 unisono b>9 coda
 a = 30;
-mostrar a
-mostrar "Entro"
+mostrar a;
+mostrar "Entro";
 fin
 .
