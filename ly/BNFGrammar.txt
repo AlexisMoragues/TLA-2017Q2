@@ -13,12 +13,21 @@ sentencia_asignacion = tipo_asignacion ";"
 sentencia_if = "cuando" expresion "entonces" sentenciasBloque "fin"
 sentencia_while = "mientras" expresion "coda" sentenciasBloque "fin"
  
-tipo_asignacion = asignacion_normal | asignacion_subir_tono | asignacion_bajar_tono | asignacion_string
+tipo_asignacion = asignacion_normal | asignacion_subir_tono | asignacion_bajar_tono | asignacion_string | asignacion_dibujar
 
 asignacion_subir_tono = variable_id "subir" expresion_matematica ";" 
 asignacion_bajar_tono = variable_id "bajar" expresion_matematica ";" 
 asignacion_string = variable_id "=" STRING ";"
 asignacion_normal = variable_id "=" expresion_matematica ";"
+
+asignacion_dibujar_do = "dibujar" "do" ";"
+asignacion_dibujar_re = "dibujar" "re" ";"
+asignacion_dibujar_mi = "dibujar" "mi" ";"
+asignacion_dibujar_fa = "dibujar" "fa" ";"
+asignacion_dibujar_sol = "dibujar" "sol" ";"
+asignacion_dibujar_la = "dibujar" "la" ";"
+asignacion_dibujar_si = "dibujar" "si" ";"
+
 
 expresion = ("!" expresion) | expresionO
 expresionO = (expresionO "asincope" expresionY) | expresionY
