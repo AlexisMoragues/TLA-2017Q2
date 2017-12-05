@@ -15,7 +15,7 @@ sentencia_while = "mientras" expresion "coda" sentenciasBloque "fin"
 
 sentencia_print: "mostrar" tipo_print ";"
 
-tipo_print: variable_id | numeto | string 
+tipo_print: variable_id | numero | string 
  
 tipo_asignacion = asignacion_normal | asignacion_subir_tono | asignacion_bajar_tono | asignacion_string | asignacion_dibujar
 
