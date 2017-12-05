@@ -4,7 +4,7 @@
  
 * Archivo de construcción: `install.sh`, ubicado en el directorio raíz.
 * Informe: `docs/Informe.pdf`.
-* Códigos fuente: carpetas `src` (código C), y `ly` (contiene los archivos realcionados con lex y yacc).
+* Códigos fuente: carpetas `src` (código C), y `ly` (contiene los archivos relacionados con lex y yacc).
  
 ## Compilación
 
@@ -26,5 +26,3 @@ Para ejecutar el compilador se debe correr el script `compile.sh` de la siguient
 ```
 * archivo_entrada : contiene el código en lenguaje `song`
 * archivo_salida  : nombre del binario de salida (opcional, el default es `song.out`)
-
-Además se puede ejecutar el compilador en modo intérprete ejecutando directamente el binario `compiler`
