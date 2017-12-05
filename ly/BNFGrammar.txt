@@ -12,6 +12,10 @@ sentencia = 	sentencia_if | sentencia_asignacion | sentencia_while
 sentencia_asignacion = tipo_asignacion ";"
 sentencia_if = "cuando" expresion "entonces" sentenciasBloque "fin"
 sentencia_while = "mientras" expresion "coda" sentenciasBloque "fin"
+
+sentencia_print: "mostrar" tipo_print ";"
+
+tipo_print: variable_id | numeto | string 
  
 tipo_asignacion = asignacion_normal | asignacion_subir_tono | asignacion_bajar_tono | asignacion_string | asignacion_dibujar
 
