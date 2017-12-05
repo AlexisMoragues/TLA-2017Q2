@@ -1,7 +1,7 @@
-programa = 	"afinando"  declaracion_variables "preparado" sentenciasMain
+programa = 	"afinando"  declaracion_variables "preparado" sentencias
 
-declaracion_variables = [declaracionVariables declaracionVariable ";"]
-declaracion_variable = declaracion_int | declaracionString;
+declaracion_variables = [declaracion_variables declaracion_variable ";"]
+declaracion_variable = declaracion_int | declaracion_string;
 declaracion_int = "var" variable_id "=" numero ";"
 declaracion_string = var variable_id "=" string ";"
 
@@ -10,8 +10,8 @@ sentencias = [ sentencias sentencia ]
 sentencia = 	sentencia_if | sentencia_asignacion | sentencia_while
 
 sentencia_asignacion = tipo_asignacion ";"
-sentencia_if = "cuando" expresion "entonces" sentenciasBloque "fin"
-sentencia_while = "mientras" expresion "coda" sentenciasBloque "fin"
+sentencia_if = "cuando" expresion "entonces" sentencias "fin"
+sentencia_while = "mientras" expresion "coda" sentencias "fin"
 
 sentencia_print: "mostrar" tipo_print ";"
 
@@ -21,7 +21,7 @@ tipo_asignacion = asignacion_normal | asignacion_subir_tono | asignacion_bajar_t
 
 asignacion_subir_tono = variable_id "subir" expresion_matematica ";" 
 asignacion_bajar_tono = variable_id "bajar" expresion_matematica ";" 
-asignacion_string = variable_id "=" STRING ";"
+asignacion_string = variable_id "=" string ";"
 asignacion_normal = variable_id "=" expresion_matematica ";"
 
 asignacion_dibujar_do = "dibujar" "do" ";"
