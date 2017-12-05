@@ -4,7 +4,7 @@
  
 * Archivo de construcción: `install.sh`, ubicado en el directorio raíz.
 * Informe: `docs/Informe.pdf`.
-* Códigos fuente: carpetas `src` (código C), y `ly` (contiene los archivos relacionados con lex y yacc).
+* Códigos fuente: carpetas `src` (código C), y `ly` (contiene la gramática y los archivos relacionados con lex y yacc).
  
 ## Compilación
 
